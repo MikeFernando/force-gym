@@ -24,7 +24,7 @@ export function Header() {
         <MaterialIcons
           name="logout"
           color="#C4C4CC"
-          size={32}
+          size={26}
         />
       </TouchableOpacity>
     </View>
