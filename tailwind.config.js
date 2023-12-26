@@ -20,7 +20,7 @@ module.exports = {
       BLUE_400: '#3f3f95',
       BLUE_500: '#2176ff',
       
-      YELLOW_400: '#facc15',
+      YELLOW_400: '#ffcc29',
 
       WHITE: '#FFFFFF'
     },
