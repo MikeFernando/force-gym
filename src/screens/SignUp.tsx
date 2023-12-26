@@ -28,10 +28,10 @@ export function SignUp() {
           resizeMode="contain"
         />
 
-        <View className="items-center w-full justify-center absolute top-24">
+        <View className="items-center w-full justify-center absolute top-20">
           <Image
             source={Logo}
-            className="-translate-y-20"
+            className="-translate-y-14"
           />
 
           <Text className="text-WHITE font-bold text-xl text-center mb-5">
@@ -55,11 +55,11 @@ export function SignUp() {
           />
 
           <Button
-            className="mt-5"
+            className="mt-3"
             title="Criar e acessar"
           />
           <Button
-            className="mt-16"
+            className="mt-20"
             variant="SECONDARY"
             title="Voltar para o login"
             onPress={handleGoBack}

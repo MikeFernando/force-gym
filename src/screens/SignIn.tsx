@@ -27,10 +27,10 @@ export function SignIn() {
           resizeMode="contain"
         />
 
-        <View className="items-center w-full justify-center absolute top-24">
+        <View className="items-center w-full justify-center absolute top-20">
           <Image
             source={Logo}
-            className="-translate-y-20"
+            className="-translate-y-14"
           />
 
           <Text className="text-WHITE font-bold text-xl text-center mb-5">
@@ -49,11 +49,11 @@ export function SignIn() {
           />
 
           <Button
-            className="mt-5"
+            className="mt-1"
             title="Acessar"
           />
 
-          <Text className="text-base text-white mt-16">
+          <Text className="text-base text-white mt-20">
             Ainda não tem acesso?
           </Text>
 
