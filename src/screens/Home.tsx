@@ -9,6 +9,7 @@ import { ExerciseCard } from "@components/ExerciseCard";
 
 export function Home() {
   const [groups, setGroups] = useState(['costas', 'peito', 'perna', 'ombro', 'bíceps'])
+  const [exercise, setExercise] = useState(['Puxada Frontal', 'Remada Curvada', 'Remada Unilateral', 'Levantamento Terra'])
   const [groupSelected, setGroupSelected] = useState('costas')
 
   return (
@@ -47,30 +48,18 @@ export function Home() {
             </Text>
           </View>
 
-         <ExerciseCard 
-            image='https://www.shutterstock.com/image-vector/woman-doing-cable-rope-tricep-260nw-2214158917.jpg'
-            name="Tríceps em Pé"
-            series={3}
-            repetitions={12} 
-         />
-         <ExerciseCard 
-            image='https://www.shutterstock.com/shutterstock/photos/2044848959/display_1500/stock-vector-man-doing-seated-lat-pulldowns-flat-vector-illustration-isolated-on-white-background-2044848959.jpg'
-            name="Puxada Frontal"
-            series={3}
-            repetitions={12} 
-         />
-         <ExerciseCard 
-            image='https://www.shutterstock.com/image-vector/man-doing-lying-crossover-bench-260nw-2380480027.jpg'
-            name="Supino Cruzado"
-            series={3}
-            repetitions={12} 
-         />
-         <ExerciseCard 
-            image='https://www.shutterstock.com/image-vector/woman-doing-straight-arm-rope-260nw-2396082303.jpg'
-            name="Suspensão Lateral"
-            series={3}
-            repetitions={12} 
-         />
+          <FlatList
+            data={exercise}
+            keyExtractor={item => item}
+            renderItem={({ item }) => (
+              <ExerciseCard 
+                image='https://www.shutterstock.com/image-vector/woman-doing-cable-rope-tricep-260nw-2214158917.jpg' 
+                name={item} 
+                series={3} 
+                repetitions={12}
+              />
+            )}
+          />
         </View>
       </View>
   )
