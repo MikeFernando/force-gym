@@ -6,7 +6,7 @@ export function HistoryCard({}: Props) {
   return (
     <View className="bg-GRAY_500 mb-4 p-4 flex-row items-center rounded-md">
       <View className="flex-1">
-        <Text className="text-white text-lg">
+        <Text className="text-WHITE text-lg">
           Costa
         </Text>
         <Text className="text-GRAY_200 text-base">

@@ -42,7 +42,7 @@ export function History() {
                 defaultSource={BackgroundHistory}
                 alt="Pessoas treinando"
                 resizeMode="contain"
-                className="opacity-40"
+                className="opacity-80"
               />
 
               <Text className="text-GRAY_300 text-base">

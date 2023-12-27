@@ -53,7 +53,7 @@ export function SignIn() {
             title="Acessar"
           />
 
-          <Text className="text-base text-white mt-20">
+          <Text className="text-base text-WHITE mt-20">
             Ainda não tem acesso?
           </Text>
 

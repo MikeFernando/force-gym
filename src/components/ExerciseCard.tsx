@@ -20,7 +20,7 @@ export function ExerciseCard({ image, name, series, repetitions, ...rest }: Prop
       />
 
       <View className="flex-1">
-        <Text className="text-white text-lg font-semibold leading-tight">
+        <Text className="text-WHITE text-lg font-semibold leading-tight">
           {name}
         </Text>
         <Text className="text-GRAY_200 text-sm">

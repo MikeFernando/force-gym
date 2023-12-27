@@ -15,7 +15,7 @@ export function Header() {
         <Text className="text-GRAY_200 text-xl">
           Olá,
         </Text>
-        <Text className="text-white text-lg font-bold">
+        <Text className="text-WHITE text-lg font-bold">
           Mike Fernando
         </Text>
       </View>
