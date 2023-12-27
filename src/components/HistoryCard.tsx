@@ -9,7 +9,7 @@ export function HistoryCard({}: Props) {
         <Text className="text-WHITE text-lg">
           Costa
         </Text>
-        <Text className="text-GRAY_200 text-base">
+        <Text className="text-GRAY_200 text-base" numberOfLines={1}>
           Puxada Frontal
         </Text>
       </View>
