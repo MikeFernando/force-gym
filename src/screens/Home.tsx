@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { FlatList, Image, Text, View } from "react-native";
 
 import HomeBackground from '@assets/background-home.png'
@@ -7,10 +8,18 @@ import { Header } from "@components/Header";
 import { useState } from "react";
 import { ExerciseCard } from "@components/ExerciseCard";
 
+import { AppRoutesNavigatorProps } from "@routes/AppRoutes";
+
 export function Home() {
   const [groups, setGroups] = useState(['costas', 'peito', 'perna', 'ombro', 'bíceps'])
   const [exercise, setExercise] = useState(['Puxada Frontal', 'Remada Curvada', 'Remada Unilateral', 'Levantamento Terra'])
   const [groupSelected, setGroupSelected] = useState('costas')
+
+  const navigation = useNavigation<AppRoutesNavigatorProps>()
+  
+  function handleOpenExerciseDetails() {
+    navigation.navigate('exercise')
+  }
 
   return (
       <View className="flex-1">
@@ -52,8 +61,9 @@ export function Home() {
             data={exercise}
             keyExtractor={item => item}
             renderItem={({ item }) => (
-              <ExerciseCard 
-                image='https://www.shutterstock.com/image-vector/woman-doing-cable-rope-tricep-260nw-2214158917.jpg' 
+              <ExerciseCard
+                onPress={handleOpenExerciseDetails}
+                image='https://static.strengthlevel.com/images/illustrations/reverse-grip-lat-pulldown-1000x1000.jpg' 
                 name={item} 
                 series={3} 
                 repetitions={12}
