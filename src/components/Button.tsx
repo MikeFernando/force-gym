@@ -21,6 +21,6 @@ export function Button({ title, variant = 'PRIMARY', ...rest }: Props) {
           </Text>
         </TouchableOpacity>
       )}
-      </>
+    </>
   )
 }

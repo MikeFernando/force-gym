@@ -11,7 +11,6 @@ import { Button } from "@components/Button"
 import { Input } from "@components/Input"
 
 export function SignIn() {
-
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
   function handleNewAccount() {
@@ -28,10 +27,7 @@ export function SignIn() {
         />
 
         <View className="items-center w-full justify-center absolute top-20">
-          <Image
-            source={Logo}
-            className="-translate-y-14"
-          />
+          <Image className="-translate-y-14" source={Logo} />
 
           <Text className="text-WHITE font-bold text-xl text-center mb-5">
             Acesse sua conta
@@ -48,17 +44,13 @@ export function SignIn() {
             secureTextEntry
           />
 
-          <Button
-            className="mt-1"
-            title="Acessar"
-          />
+          <Button className="mt-1" title="Acessar" />
 
           <Text className="text-base text-WHITE mt-20">
             Ainda não tem acesso?
           </Text>
 
-          <Button
-            className="mt-5"
+          <Button className="mt-5"
             title="Criar conta"
             variant="SECONDARY"
             onPress={handleNewAccount}

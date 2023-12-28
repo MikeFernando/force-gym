@@ -26,9 +26,7 @@ export function Exercise() {
         </TouchableOpacity>
 
         <View className="flex-row items-center justify-between mt-5">
-          <Text className="flex-shrink text-xl text-WHITE font-semibold">
-            Puxada Frontal
-          </Text>
+          <Text className="flex-shrink text-xl text-WHITE font-semibold"> Puxada Frontal</Text>
 
           <View className="flex-row items-center">
             <BodySvg />
@@ -49,12 +47,12 @@ export function Exercise() {
             <View className="flex-row justify-between px-2">
               <View className="flex-row items-center">
                 <SeriesSvg />
-                <Text className="text-GRAY_100 ml-2 text-base"> 3 Series</Text>
+                <Text className="text-GRAY_100 ml-2 text-base">3 Series</Text>
               </View>
 
               <View className="flex-row items-center">
                 <RepetitionsSvg />
-                <Text className="text-GRAY_100 ml-2 text-base"> 12 repetições</Text>
+                <Text className="text-GRAY_100 ml-2 text-base">12 repetições</Text>
               </View>
             </View>
 

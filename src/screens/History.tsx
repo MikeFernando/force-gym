@@ -23,13 +23,12 @@ export function History() {
       <ScreenHeader title="Histórico de Exercícios" />
 
       <View className="absolute translate-y-32 w-full">
-        <SectionList 
+        <SectionList className="px-8"
           sections={exercises}
           keyExtractor={item => item}  
           renderItem={({ item }) => (
             <HistoryCard />
           )}
-          className="px-8"
           renderSectionHeader={({ section }) => (
             <Text className="text-GRAY_200 text-base px-1 mb-2 font-semibold">
               {section.title}
@@ -37,12 +36,11 @@ export function History() {
           )}
           ListEmptyComponent={() => (
             <View className="items-center justify-center mt-32">
-              <Image
+              <Image className="opacity-80"
                 source={BackgroundHistory}
                 defaultSource={BackgroundHistory}
                 alt="Pessoas treinando"
                 resizeMode="contain"
-                className="opacity-80"
               />
 
               <Text className="text-GRAY_300 text-base">
