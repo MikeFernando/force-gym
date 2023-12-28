@@ -7,19 +7,15 @@ export type Props = PressableProps & {
 
 export function Group({ name, isActive = false, ...rest }: Props) {
   return (
-      <Pressable
-        {...rest}
+      <Pressable {...rest}
         className={`bg-GRAY_600 rounded-md px-3 py-2 w-24 h-10 mr-3 items-center justify-center overflow-hidden 
           ${isActive 
             ? 'border border-YELLOW_400' 
             : ''
           }`
         }>
-        <Text 
-          className={`text-GRAY_200 uppercase text-sm 
-            ${isActive && 'text-YELLOW_400'}`
-        }>
-          {name}
+        <Text className={`text-GRAY_200 uppercase text-sm ${isActive && 'text-YELLOW_400'}`}>
+            {name}
         </Text>
       </Pressable>
   )

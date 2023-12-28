@@ -1,4 +1,7 @@
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import * as ImagePicker from "expo-image-picker"
+import * as FileSystem from 'expo-file-system';
+import Toast from "react-native-root-toast";
 import { useState } from "react";
 
 import { ScreenHeader } from "@components/ScreenHeader";
@@ -8,6 +11,43 @@ import { Button } from "@components/Button";
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [userPhoto, setUserPhoto] = useState('https://scontent-gru2-1.xx.fbcdn.net/v/t39.30808-6/407567327_1107784840209001_8925044900244978296_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=k8jy_k2o8uEAX9EX-_W&_nc_ht=scontent-gru2-1.xx&oh=00_AfBIVm8X05sBFpUx3Z87z6pETahl0N4la71cJusKAqzWHg&oe=6591BF47')
+
+  async function handleUserPhotoSelect() {
+    setPhotoIsLoading(true)
+    
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      })
+  
+      if (photoSelected.canceled) {
+        return
+      }
+  
+      if (photoSelected.assets[0].uri) {
+        const photoInfo: any = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+        
+        if (photoInfo.size && (photoInfo.size / 1024 / 1024) > 1) {
+          return Toast.show('Escolha uma imagem com até 5MB.', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.TOP,
+            backgroundColor: '#F75A68',
+            textColor: '#ffffff',
+          })
+        }
+
+        setUserPhoto(photoSelected.assets[0].uri) 
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPhotoIsLoading(false)
+    }
+  } 
 
   return (
       <View className="flex-1">
@@ -19,14 +59,14 @@ export function Profile() {
               <View  className="w-32 h-32 rounded-full bg-GRAY_500"/>
             ) : (
               <UserPhoto 
-                source={{ uri: "https://github.com/MikeFernando.png" }}
+                source={{ uri: `${userPhoto}` }}
                 alt="Foto de perfil"
                 size={128}
               />
             )}
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleUserPhotoSelect}>
             <Text className="text-BLUE_500 text-lg font-bold text-center mt-2 mb-8">
               Alterar foto
             </Text>

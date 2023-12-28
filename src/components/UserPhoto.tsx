@@ -6,8 +6,7 @@ export type Props = ImageProps & {
 
 export function UserPhoto({ size, ...rest }: Props) {
   return (
-      <Image
-        className="rounded-full"
+      <Image  className="rounded-full"
         style={{ borderWidth: 2, borderColor: '#C4C4CC' }}
         width={size}
         height={size}

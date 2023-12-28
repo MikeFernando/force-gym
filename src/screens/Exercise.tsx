@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View, Image } from "react-native";
+import { Text, TouchableOpacity, View, Image, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from '@expo/vector-icons'
 
@@ -24,10 +24,9 @@ export function Exercise() {
             color={'#ffcc29'}
           />
         </TouchableOpacity>
+
         <View className="flex-row items-center justify-between mt-5">
-          <Text className="flex-shrink text-xl text-WHITE font-semibold">
-            Puxada Frontal
-          </Text>
+          <Text className="flex-shrink text-xl text-WHITE font-semibold"> Puxada Frontal</Text>
 
           <View className="flex-row items-center">
             <BodySvg />
@@ -36,31 +35,33 @@ export function Exercise() {
         </View>
       </View>
 
-      <View className="p-8">
-        <Image className='w-full h-80 mb-3 rounded-xl'
-          source={{ uri: 'https://static.strengthlevel.com/images/illustrations/reverse-grip-lat-pulldown-1000x1000.jpg' }}
-          alt="Mulher fazendo exercício puxada frontal"
-          resizeMode="cover"
-        />
-
-        <View className="bg-GRAY_500 p-5 rounded-xl">
-          <View className="flex-row justify-between px-2">
-            <View className="flex-row items-center">
-              <SeriesSvg />
-              <Text className="text-GRAY_100 ml-2 text-base"> 3 Series</Text>
-            </View>
-
-            <View className="flex-row items-center">
-              <RepetitionsSvg />
-              <Text className="text-GRAY_100 ml-2 text-base"> 12 repetições</Text>
-            </View>
-          </View>
-
-          <Button className="mt-5"
-            title="Marcar como realizado"
+      <ScrollView className="p-8">
+        <View>
+          <Image className='w-full h-80 mb-3 rounded-xl'
+            source={{ uri: 'https://static.strengthlevel.com/images/illustrations/reverse-grip-lat-pulldown-1000x1000.jpg' }}
+            alt="Mulher fazendo exercício puxada frontal"
+            resizeMode="cover"
           />
+
+          <View className="bg-GRAY_500 p-5 rounded-xl">
+            <View className="flex-row justify-between px-2">
+              <View className="flex-row items-center">
+                <SeriesSvg />
+                <Text className="text-GRAY_100 ml-2 text-base">3 Series</Text>
+              </View>
+
+              <View className="flex-row items-center">
+                <RepetitionsSvg />
+                <Text className="text-GRAY_100 ml-2 text-base">12 repetições</Text>
+              </View>
+            </View>
+
+            <Button className="mt-5"
+              title="Marcar como realizado"
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   )
 }
