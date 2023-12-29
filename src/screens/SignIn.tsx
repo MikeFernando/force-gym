@@ -34,7 +34,7 @@ export function SignIn()
   function handleNewAccount() {
     navigation.navigate("signUp")
   }
-
+  
   function handleSignIn(data: FormDataProps) {
     console.log(data);
   } 
