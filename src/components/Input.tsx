@@ -25,7 +25,7 @@ export function Input({ errorMessage = null, ...rest }: Props)
         placeholderTextColor='#7C7C8A'
       />
       {
-        errorMessage &&  <Text className="text-RED self-start mb-2 -translate-y-3 ml-1">{errorMessage}</Text>
+        errorMessage &&  <Text className="text-RED self-start -translate-y-3 ml-1">{errorMessage}</Text>
       }
     </>
   )
