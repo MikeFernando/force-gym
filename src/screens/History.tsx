@@ -30,9 +30,7 @@ export function History() {
             <HistoryCard />
           )}
           renderSectionHeader={({ section }) => (
-            <Text className="text-GRAY_200 text-base px-1 mb-2 font-semibold">
-              {section.title}
-            </Text>
+            <Text className="text-GRAY_200 text-base px-1 mb-2 font-semibold">{section.title}</Text>
           )}
           ListEmptyComponent={() => (
             <View className="items-center justify-center mt-32">
@@ -42,13 +40,8 @@ export function History() {
                 alt="Pessoas treinando"
                 resizeMode="contain"
               />
-
-              <Text className="text-GRAY_300 text-base">
-                Não há exercícios registrados ainda.
-              </Text>
-              <Text className="text-GRAY_300 text-base">
-                Bora treinar hoje?
-              </Text>
+              <Text className="text-GRAY_300 text-base"> Não há exercícios registrados ainda.</Text>
+              <Text className="text-GRAY_300 text-base"> Bora treinar hoje?</Text>
             </View>
           )}
         />
