@@ -11,7 +11,7 @@ export function Routes() {
   return (
     <View className="flex-1 bg-GRAY_700">
       <NavigationContainer theme={theme}>
-        <AppRoutes />
+        <AuthRoutes />
       </NavigationContainer>
     </View>
   )
