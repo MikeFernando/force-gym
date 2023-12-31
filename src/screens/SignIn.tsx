@@ -37,7 +37,8 @@ export function SignIn()
   
   function handleSignIn(data: FormDataProps) {
     console.log(data);
-  } 
+  }
+  
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 items-center relative px-8">

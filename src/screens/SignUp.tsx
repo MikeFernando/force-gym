@@ -53,7 +53,7 @@ export function SignUp() {
         <View className="items-center w-full justify-center absolute">
           <Image source={Logo} />
 
-          <Text className="text-WHITE font-bold text-xl text-center mb-5">
+          <Text className="text-WHITE font-bold text-xl text-center mb-20">
             Crie sua conta
           </Text>
 

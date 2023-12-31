@@ -11,7 +11,7 @@ import { Button } from "@components/Button";
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto] = useState('https://scontent-gru2-1.xx.fbcdn.net/v/t39.30808-6/407567327_1107784840209001_8925044900244978296_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=k8jy_k2o8uEAX9EX-_W&_nc_ht=scontent-gru2-1.xx&oh=00_AfBIVm8X05sBFpUx3Z87z6pETahl0N4la71cJusKAqzWHg&oe=6591BF47')
+  const [userPhoto, setUserPhoto] = useState('')
 
   async function handleUserPhotoSelect() {
     setPhotoIsLoading(true)
