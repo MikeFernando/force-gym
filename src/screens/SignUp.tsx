@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Image } from "react-native"
 import * as y from 'yup'
 
+import { api } from '@services/api'
+
 import { AuthNavigatorRoutesProps } from "@routes/AuthRoutes"
 
 import Background from '@assets/background.png'
@@ -36,8 +38,10 @@ export function SignUp() {
     navigation.navigate("signIn")
   }
 
-  function handleSignUp(data: FormDataProps) {
-    console.log(data);
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    const response = await api.post('/users', { name, email, password })
+    
+    console.log(response.data);
   }
 
   return (
@@ -97,6 +101,8 @@ export function SignUp() {
                 value={value}
                 onChangeText={onChange}
                 errorMessage={errors.password?.message}
+                returnKeyType="send"
+                onSubmitEditing={() => handleSubmit(handleSignUp)}
               />
             )}
           />
