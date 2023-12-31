@@ -34,10 +34,11 @@ export function SignIn()
   function handleNewAccount() {
     navigation.navigate("signUp")
   }
-
+  
   function handleSignIn(data: FormDataProps) {
     console.log(data);
-  } 
+  }
+  
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 items-center relative px-8">
@@ -48,7 +49,7 @@ export function SignIn()
           resizeMode="contain"
         />
 
-        <View className="items-center w-full justify-center absolute top-20">
+        <View className="items-center w-full justify-center absolute top-16">
           <Image className="-translate-y-14" source={Logo} />
 
           <Text className="text-WHITE font-bold text-xl text-center mb-5">
@@ -89,11 +90,11 @@ export function SignIn()
             onPress={handleSubmit(handleSignIn)}
           />
 
-          <Text className="text-base text-WHITE mt-20">
+          <Text className="text-base text-WHITE mt-10 mb-2">
             Ainda não tem acesso?
           </Text>
 
-          <Button className="mt-5"
+          <Button className="mb-24"
             title="Criar conta"
             variant="SECONDARY"
             onPress={handleNewAccount}

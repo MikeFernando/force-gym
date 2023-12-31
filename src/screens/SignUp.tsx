@@ -17,14 +17,12 @@ type FormDataProps = {
   name: string
   email: string
   password: string
-  password_confirm: string
 }
 
 const SignUpSchema = y.object({
   name: y.string().required('Nome obrigatório.'),
   email: y.string().required('E-mail obrigatório.').email('E-mail inválido.'),
   password: y.string().required('Informe a senha').min(6, 'A senha deve ter pelo menos 6 dígitos.'),
-  password_confirm: y.string().required('Confirme a senha').oneOf([y.ref('password')], 'A confirmação da senha não confere.')
 })
 
 export function SignUp() {
@@ -55,7 +53,7 @@ export function SignUp() {
         <View className="items-center w-full justify-center absolute">
           <Image source={Logo} />
 
-          <Text className="text-WHITE font-bold text-xl text-center mb-5">
+          <Text className="text-WHITE font-bold text-xl text-center mb-20">
             Crie sua conta
           </Text>
 
@@ -103,24 +101,7 @@ export function SignUp() {
             )}
           />
 
-          <Controller
-            name="password_confirm"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="Confirme a senha"
-                autoCapitalize="none"
-                secureTextEntry
-                value={value}
-                onChangeText={onChange}
-                onSubmitEditing={handleSubmit(handleSignUp)}
-                returnKeyType="send"
-                errorMessage={errors.password_confirm?.message}
-              />
-            )}
-          />
-
-          <Button className="mt-3"
+          <Button className="mt-10"
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
           />
