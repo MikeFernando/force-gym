@@ -11,7 +11,7 @@ import { Button } from "@components/Button";
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto] = useState('')
+  const [userPhoto, setUserPhoto] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_kSJS4PDXmamxDis9zrjyfSj2DGKrZb_0mnIRUJJfJJfxvSDTe6Z7lTF3GtQG97aFctQ&usqp=CAU')
 
   async function handleUserPhotoSelect() {
     setPhotoIsLoading(true)
@@ -56,7 +56,11 @@ export function Profile() {
         <ScrollView className="px-8" contentContainerStyle={{ paddingBottom: 56 }}>
           <View className="items-center justify-center mt-8">
             {photoIsLoading ? (
-              <View  className="w-32 h-32 rounded-full bg-GRAY_500"/>
+              <UserPhoto 
+                source={{ uri: `${userPhoto}` }}
+                alt="Foto de perfil"
+                size={128}
+              />
             ) : (
               <UserPhoto 
                 source={{ uri: `${userPhoto}` }}

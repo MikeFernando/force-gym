@@ -35,7 +35,10 @@ export function AuthContextProvider({ children }: Props) {
   async function loadUserData() {
     try {
       const userLogged = await storageUserGet()
-      setUser(userLogged)
+      
+      if (userLogged) {
+        setUser(userLogged)
+      }
 
     } catch (error) {
       throw error
