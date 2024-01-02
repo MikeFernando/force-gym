@@ -7,11 +7,17 @@ import { useAuth } from "@hooks/useAuth";
 import { AuthRoutes } from "./AuthRoutes";
 import { AppRoutes } from "./AppRoutes";
 
+import { Loading } from "@components/Loading";
+
 export function Routes() {
-  const { user } = useAuth()
+  const { user, isLoadingStorageUserData } = useAuth()
   
   const theme = DefaultTheme
   theme.colors.background = '#121214'
+
+  if (isLoadingStorageUserData) {
+    return <Loading />
+  }
 
   return (
     <View className="flex-1 bg-GRAY_700">
