@@ -1,7 +1,6 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { View } from "react-native";
 
-import { AuthContextProvider } from "@contexts/AuthContext";
 import { useAuth } from "@hooks/useAuth";
 
 import { AuthRoutes } from "./AuthRoutes";

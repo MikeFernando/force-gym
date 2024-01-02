@@ -2,6 +2,7 @@ import { ScrollView, Text, View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from "react-hook-form"
+import Toast from "react-native-root-toast"
 import { Image } from "react-native"
 import { useState } from "react"
 import * as y from 'yup'
@@ -16,7 +17,6 @@ import Logo from '@assets/logo.png'
 
 import { Button } from "@components/Button"
 import { Input } from "@components/Input"
-import Toast from "react-native-root-toast"
 
 type FormData = {
   email: string
@@ -28,8 +28,7 @@ const SignInSchema = y.object({
   password: y.string().required('Informe a senha').min(6, 'A senha deve ter pelo menos 6 dígitos.'),
 })
 
-export function SignIn() 
-{
+export function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const { signIn } = useAuth()
 
@@ -46,6 +45,7 @@ export function SignIn()
   async function handleSignIn({ email, password }: FormData) {
     try {
       setIsLoading(true)
+      
       await signIn(email, password)
 
     } catch (error) {

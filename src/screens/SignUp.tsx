@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
 import Toast from "react-native-root-toast";
 import { Image } from "react-native"
+import { useState } from "react";
 import * as y from 'yup'
 
 import { AuthNavigatorRoutesProps } from "@routes/AuthRoutes"
@@ -16,6 +17,7 @@ import Logo from '@assets/logo.png'
 
 import { Button } from "@components/Button"
 import { Input } from "@components/Input"
+import { useAuth } from "@hooks/useAuth";
 
 type FormDataProps = {
   name: string
@@ -30,9 +32,13 @@ const SignUpSchema = y.object({
 })
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false)
+
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(SignUpSchema)
   })
+
+  const { signIn } = useAuth()
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
@@ -42,10 +48,13 @@ export function SignUp() {
 
   async function handleSignUp({ name, email, password }: FormDataProps) {
     try {
-      const response = await api.post('/users', { name, email, password })
-      console.log(response.data);
+      setIsLoading(true)
+
+      await api.post('/users', { name, email, password })
+      await signIn(email, password)
 
     } catch (error) {
+      setIsLoading(false)
       
       const isAppError = error instanceof AppError
       const title = isAppError ? error.message : 'Erro no servidor, Tente novamente mais tarde!'
@@ -123,6 +132,7 @@ export function SignUp() {
           />
 
           <Button className="mt-10"
+            isLoading={isLoading}
             title="Criar e acessar"
             onPress={handleSubmit(handleSignUp)}
           />
