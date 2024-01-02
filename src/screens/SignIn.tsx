@@ -3,17 +3,22 @@ import { useNavigation } from "@react-navigation/native"
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from "react-hook-form"
 import { Image } from "react-native"
+import { useState } from "react"
 import * as y from 'yup'
 
+import { AppError } from "@utils/AppError"
+
 import { AuthNavigatorRoutesProps } from "@routes/AuthRoutes"
+import { useAuth } from "@hooks/useAuth"
 
 import Background from '@assets/background.png'
 import Logo from '@assets/logo.png'
 
 import { Button } from "@components/Button"
 import { Input } from "@components/Input"
+import Toast from "react-native-root-toast"
 
-type FormDataProps = {
+type FormData = {
   email: string
   password: string
 }
@@ -25,7 +30,10 @@ const SignInSchema = y.object({
 
 export function SignIn() 
 {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+  const [isLoading, setIsLoading] = useState(false)
+  const { signIn } = useAuth()
+
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(SignInSchema)
   })
 
@@ -35,8 +43,25 @@ export function SignIn()
     navigation.navigate("signUp")
   }
   
-  function handleSignIn(data: FormDataProps) {
-    console.log(data);
+  async function handleSignIn({ email, password }: FormData) {
+    try {
+      setIsLoading(true)
+      await signIn(email, password)
+
+    } catch (error) {
+
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Tente novamente mais tarde!'
+
+      setIsLoading(false)
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#F75A68',
+        textColor: '#ffffff'
+      })
+    }   
   }
   
   return (
@@ -77,10 +102,12 @@ export function SignIn()
               <Input
                 placeholder="Senha"
                 autoCapitalize="none"
+                returnKeyType="send"
                 secureTextEntry
                 value={value}
                 onChangeText={onChange}
                 errorMessage={errors.password?.message}
+                onSubmitEditing={handleSubmit(handleSignIn)}
               />
             )}
           />
@@ -88,6 +115,7 @@ export function SignIn()
           <Button className="mt-1" 
             title="Acessar"
             onPress={handleSubmit(handleSignIn)}
+            isLoading={isLoading}
           />
 
           <Text className="text-base text-WHITE mt-10 mb-2">
