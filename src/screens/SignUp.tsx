@@ -2,10 +2,14 @@ import { useNavigation } from "@react-navigation/native"
 import { ScrollView, Text, View } from "react-native"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup'
+import Toast from "react-native-root-toast";
 import { Image } from "react-native"
 import * as y from 'yup'
 
 import { AuthNavigatorRoutesProps } from "@routes/AuthRoutes"
+
+import { api } from '@services/api'
+import { AppError } from "@utils/AppError"
 
 import Background from '@assets/background.png'
 import Logo from '@assets/logo.png'
@@ -36,8 +40,23 @@ export function SignUp() {
     navigation.navigate("signIn")
   }
 
-  function handleSignUp(data: FormDataProps) {
-    console.log(data);
+  async function handleSignUp({ name, email, password }: FormDataProps) {
+    try {
+      const response = await api.post('/users', { name, email, password })
+      console.log(response.data);
+
+    } catch (error) {
+      
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Erro no servidor, Tente novamente mais tarde!'
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#F75A68',
+        textColor: '#ffffff'
+      })
+    }
   }
 
   return (
@@ -97,6 +116,8 @@ export function SignUp() {
                 value={value}
                 onChangeText={onChange}
                 errorMessage={errors.password?.message}
+                returnKeyType="send"
+                onSubmitEditing={() => handleSubmit(handleSignUp)}
               />
             )}
           />
