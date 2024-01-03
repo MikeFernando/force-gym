@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { useAuth } from "@hooks/useAuth";
 
-import defaultUserAvatar  from '@assets/userPhotoDefault.png'
+// import defaultUserAvatar  from '@assets/userPhotoDefault.png'
 
 import { ScreenHeader } from "@components/ScreenHeader";
 import { UserPhoto } from "@components/UserPhoto";
@@ -15,7 +15,7 @@ import { Button } from "@components/Button";
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto] = useState('')
+  const [userPhoto, setUserPhoto] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6xSz0eMW7GmpKukczOHvPWWGDqaBCqWA-Mw&usqp=CAU')
 
   const { user } = useAuth()
 
@@ -44,12 +44,13 @@ export function Profile() {
             backgroundColor: '#F75A68',
             textColor: '#ffffff',
           })
+          
         }
 
         setUserPhoto(photoSelected.assets[0].uri) 
       }
     } catch (error) {
-      console.log(error);
+      throw error
     } finally {
       setPhotoIsLoading(false)
     }
@@ -62,7 +63,7 @@ export function Profile() {
         <ScrollView className="px-8" contentContainerStyle={{ paddingBottom: 56 }}>
           <View className="items-center justify-center mt-8">
             <UserPhoto 
-              source={user.avatar ? { uri: user.avatar } : defaultUserAvatar }
+              source={{ uri: userPhoto }}
               alt="Foto de perfil"
               size={128}
             />

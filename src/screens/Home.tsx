@@ -1,25 +1,78 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, Image, Text, View } from "react-native";
+import Toast from "react-native-root-toast";
+
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
+
+import { api } from "@services/api";
+import { AppError } from "@utils/AppError";
 
 import HomeBackground from '@assets/background-home.png'
 
 import { Group } from "@components/Group";
 import { Header } from "@components/Header";
-import { useState } from "react";
 import { ExerciseCard } from "@components/ExerciseCard";
 
 import { AppRoutesNavigatorProps } from "@routes/AppRoutes";
 
 export function Home() {
-  const [groups, setGroups] = useState(['costas', 'peito', 'perna', 'ombro', 'bíceps'])
-  const [exercise, setExercise] = useState(['Puxada Frontal', 'Remada Curvada', 'Remada Unilateral', 'Levantamento Terra'])
-  const [groupSelected, setGroupSelected] = useState('costas')
+  const [groups, setGroups] = useState<string[]>([])
+  const [exercise, setExercise] = useState<ExerciseDTO[]>([])
+  const [groupSelected, setGroupSelected] = useState('antebraço')
 
   const navigation = useNavigation<AppRoutesNavigatorProps>()
 
   function handleOpenExerciseDetails() {
     navigation.navigate('exercise')
   }
+
+  async function getGroups() {
+    try {
+      const response = await api.get('/groups')
+      setGroups(response.data);
+      
+      
+    } catch (error) {
+      
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possível carregar os grupos musculares.'
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#F75A68',
+        textColor: '#ffffff',
+      })
+    }
+  }
+
+  async function fetchExerciseByGroup() {
+    try {
+      const response = await api.get(`/exercises/bygroup/${groupSelected}`)
+      setExercise(response.data);
+      
+    } catch (error) {
+      
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possível carregar os exercícios.'
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#F75A68',
+        textColor: '#ffffff',
+      })
+    }
+  }
+
+  useEffect(() => {
+    getGroups()
+  }, [])
+
+  useFocusEffect(useCallback(() => {
+    fetchExerciseByGroup()
+  }, [groupSelected]))
 
   return (
     <View className="flex-1">
@@ -59,16 +112,14 @@ export function Home() {
 
         <FlatList
           data={exercise}
-          keyExtractor={item => item}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <ExerciseCard
+              data={item}
               onPress={handleOpenExerciseDetails}
-              image='https://static.strengthlevel.com/images/illustrations/reverse-grip-lat-pulldown-1000x1000.jpg'
-              name={item}
-              series={3}
-              repetitions={12}
             />
           )}
+          contentContainerStyle={{ paddingBottom: 100 }}
         />
       </View>
     </View>
