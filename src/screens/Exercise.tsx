@@ -1,18 +1,58 @@
 import { Text, TouchableOpacity, View, Image, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from '@expo/vector-icons'
+import { useEffect, useState } from "react";
+import Toast from "react-native-root-toast";
+
+import { api } from "@services/api";
+import { AppError } from "@utils/AppError";
 
 import BodySvg from '@assets/body.svg'
 import SeriesSvg from '@assets/series.svg'
 import RepetitionsSvg from '@assets/repetitions.svg'
+
 import { Button } from "@components/Button";
+import { ExerciseDTO } from "@dtos/ExerciseDTO";
+
+type RouteParamsProps = {
+  exerciseId: string
+}
 
 export function Exercise() {
+  const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO)
+
   const navigation = useNavigation()
+
+  const route = useRoute()
+  const { exerciseId } = route.params as RouteParamsProps
 
   function handleGoBack() {
     navigation.goBack()
   }
+
+  async function fetchExerciseDetails() {
+    try {
+      const response = await api.get(`exercises/${exerciseId}`)
+      setExercise(response.data);
+      
+      
+    } catch (error) {
+      
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do exercício.'
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#F75A68',
+        textColor: '#ffffff',
+      })
+    }
+  }
+
+  useEffect(() => {
+    fetchExerciseDetails()
+  }, [exerciseId])
 
   return (
     <View className="flex-1">
@@ -26,33 +66,35 @@ export function Exercise() {
         </TouchableOpacity>
 
         <View className="flex-row items-center justify-between mt-5">
-          <Text className="flex-shrink text-xl text-WHITE font-semibold"> Puxada Frontal</Text>
+          <Text className="flex-shrink text-xl text-WHITE font-semibold pr-4">{exercise.name}</Text>
 
           <View className="flex-row items-center">
             <BodySvg />
-            <Text className="text-GRAY_300 text-base capitalize">costas</Text>
+            <Text className="text-GRAY_300 text-base capitalize">{exercise.group}</Text>
           </View>
         </View>
       </View>
 
       <ScrollView className="p-8">
         <View>
-          <Image className='w-full h-80 mb-3 rounded-xl'
-            source={{ uri: 'https://static.strengthlevel.com/images/illustrations/reverse-grip-lat-pulldown-1000x1000.jpg' }}
-            alt="Mulher fazendo exercício puxada frontal"
-            resizeMode="cover"
-          />
+          <View className="rounded-lg mb-3 overflow-hidden">
+            <Image className='w-full h-80'
+              source={{ uri: `${api.defaults.baseURL}/exercise/demo/${exercise.demo}`}}
+              alt="Mulher fazendo exercício puxada frontal"
+              resizeMode="cover"
+            />
+          </View>
 
           <View className="bg-GRAY_500 p-5 rounded-xl">
             <View className="flex-row justify-between px-2">
               <View className="flex-row items-center">
                 <SeriesSvg />
-                <Text className="text-GRAY_100 ml-2 text-base">3 Series</Text>
+                <Text className="text-GRAY_100 ml-2 text-base">{exercise.series} Series</Text>
               </View>
 
               <View className="flex-row items-center">
                 <RepetitionsSvg />
-                <Text className="text-GRAY_100 ml-2 text-base">12 repetições</Text>
+                <Text className="text-GRAY_100 ml-2 text-base">{exercise.repetitions} repetições</Text>
               </View>
             </View>
 

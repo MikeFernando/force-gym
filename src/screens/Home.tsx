@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import Toast from "react-native-root-toast";
 
 import { ExerciseDTO } from "@dtos/ExerciseDTO";
@@ -17,14 +17,15 @@ import { ExerciseCard } from "@components/ExerciseCard";
 import { AppRoutesNavigatorProps } from "@routes/AppRoutes";
 
 export function Home() {
+  const [isLoading, setIsLoading] = useState(true)
   const [groups, setGroups] = useState<string[]>([])
   const [exercise, setExercise] = useState<ExerciseDTO[]>([])
   const [groupSelected, setGroupSelected] = useState('antebraço')
 
   const navigation = useNavigation<AppRoutesNavigatorProps>()
 
-  function handleOpenExerciseDetails() {
-    navigation.navigate('exercise')
+  function handleOpenExerciseDetails(exerciseId: string) {
+    navigation.navigate('exercise', { exerciseId })
   }
 
   async function getGroups() {
@@ -49,6 +50,8 @@ export function Home() {
 
   async function fetchExerciseByGroup() {
     try {
+      setIsLoading(true)
+
       const response = await api.get(`/exercises/bygroup/${groupSelected}`)
       setExercise(response.data);
       
@@ -63,6 +66,8 @@ export function Home() {
         backgroundColor: '#F75A68',
         textColor: '#ffffff',
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -110,17 +115,21 @@ export function Home() {
           </Text>
         </View>
 
-        <FlatList
-          data={exercise}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <ExerciseCard
-              data={item}
-              onPress={handleOpenExerciseDetails}
+        {
+          isLoading 
+          ? <ActivityIndicator className="flex-1 items-center justify-center mt-40" />
+          : (<FlatList
+              data={exercise}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <ExerciseCard
+                  data={item}
+                  onPress={() => handleOpenExerciseDetails(item.id)}
+                />
+              )}
             />
-          )}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        />
+          )     
+        }
       </View>
     </View>
   )
