@@ -111,7 +111,7 @@ export function Home() {
             Exercícios
           </Text>
           <Text className="text-GRAY_100 leading text-md font-bold">
-            4
+            {exercise.length}
           </Text>
         </View>
 
