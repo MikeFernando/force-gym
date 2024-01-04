@@ -3,8 +3,8 @@ import { ReactNode, createContext, useEffect, useState } from "react"
 import { api } from "@services/api"
 import { UserDTO } from "@dtos/UserDTO"
 
-import { deleteUser, getUser, saveUser } from "@storage/user/storageUser"
-import { deleteToken, getToken, saveToken } from "@storage/token/storageToken"
+import { storageDeleteUser, storageGetUser, storageSaveUser } from "@storage/user/storageUser"
+import { storageDeleteToken, storageGetToken, storageSaveToken } from "@storage/token/storageToken"
 
 type AuthContextData = {
   user: UserDTO;
@@ -36,8 +36,8 @@ export function AuthContextProvider({ children }: Props) {
     try {
       setIsLoadingStorageUserData(true)
 
-      await saveToken(token)
-      await saveUser(userData)
+      await storageSaveToken(token)
+      await storageSaveUser(userData)
 
     } catch (error) {
       throw error
@@ -65,8 +65,8 @@ export function AuthContextProvider({ children }: Props) {
 
       setUser({} as UserDTO)
       
-      await deleteUser()
-      await deleteToken()
+      await storageDeleteUser()
+      await storageDeleteToken()
       
     } catch (error) {
       throw error
@@ -78,7 +78,7 @@ export function AuthContextProvider({ children }: Props) {
   async function updatingUserProfile(userUpdated: UserDTO) {
     try {
       setUser(userUpdated)
-      await saveUser(userUpdated)
+      await storageSaveUser(userUpdated)
 
     } catch (error) {
       throw error
@@ -89,8 +89,8 @@ export function AuthContextProvider({ children }: Props) {
     try {
       setIsLoadingStorageUserData(true)
 
-      const token = await getToken()
-      const userLogged = await getUser()
+      const token = await storageGetToken()
+      const userLogged = await storageGetUser()
 
       if (token && userLogged) {
         updateUserAndToken(token, userLogged)

@@ -17,6 +17,7 @@ import { UserPhoto } from "@components/UserPhoto";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+import defaultUserAvatar  from '@assets/userPhotoDefault.png'
 
 type FormDataProps = {
   name: string;
@@ -48,13 +49,10 @@ const ProfileSchema = Yup.object({
 
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false)
-  const [userPhoto, setUserPhoto] = useState(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6xSz0eMW7GmpKukczOHvPWWGDqaBCqWA-Mw&usqp=CAU"
-  );
 
   const { user, updatingUserProfile } = useAuth();
 
-  const {control, handleSubmit, formState: { errors }} = useForm<FormDataProps>({
+  const {control, handleSubmit, reset, formState: { errors }} = useForm<FormDataProps>({
     defaultValues: {
       name: user.name,
       email: user.email,
@@ -63,6 +61,8 @@ export function Profile() {
   });
 
   async function handleUserPhotoSelect() {
+    setIsUpdating(true);
+
     try {
       const photoSelected = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -89,17 +89,46 @@ export function Profile() {
           });
         }
 
-        setUserPhoto(photoSelected.assets[0].uri);
+        const fileExtension = photoSelected.assets[0].uri.split('.').pop()
+        
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase().replace(/\s/g, ''),
+          type: `${photoSelected.assets[0].type}/${fileExtension}`,
+          uri: photoSelected.assets[0].uri,
+        } as any
+        
+        const photoUploadForm = new FormData()
+        photoUploadForm.append('avatar', photoFile)
+
+        const avatarUpdatedResponse = await api.patch('/users/avatar', photoUploadForm, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+        const userUpdated = user
+        userUpdated.avatar = avatarUpdatedResponse.data.avatar
+
+        updatingUserProfile(userUpdated)
+
+        Toast.show('Foto atualizada!', {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.TOP,
+          backgroundColor: "#00B37E",
+          textColor: "#ffffff",
+        })
       }
     } catch (error) {
       throw error;
+    } finally {
+      setIsUpdating(false);
     }
   }
 
   async function handleUpdateProfile({ name, old_password, new_password }: FormDataProps) {
-    try {
-      setIsUpdating(true)
+    setIsUpdating(true)
 
+    try {
       const userUpdated = user
       userUpdated.name = name
     
@@ -110,6 +139,7 @@ export function Profile() {
       })
 
       await updatingUserProfile(userUpdated)
+      reset()
 
       Toast.show('Perfil atualizado com sucesso!', {
         duration: Toast.durations.LONG,
@@ -143,11 +173,25 @@ export function Profile() {
         contentContainerStyle={{ paddingBottom: 56 }}
       >
         <View className="items-center justify-center mt-8">
-          <UserPhoto
-            source={{ uri: userPhoto }}
-            alt="Foto de perfil"
-            size={128}
-          />
+          {
+            isUpdating ? (
+              <UserPhoto
+                source={{ uri: `${defaultUserAvatar}` }}
+                alt="Foto de perfil"
+                size={128}
+              />
+            ) : (
+              <UserPhoto
+                source={
+                  user.avatar 
+                    ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}`}
+                    : defaultUserAvatar
+                }
+                alt="Foto de perfil"
+                size={128}
+              />
+            )
+          }
         </View>
 
         <TouchableOpacity onPress={handleUserPhotoSelect}>
