@@ -93,7 +93,7 @@ export function AuthContextProvider({ children }: Props) {
       const userLogged = await storageGetUser()
 
       if (token && userLogged) {
-        updateUserAndToken(token, userLogged)
+        await updateUserAndToken(token, userLogged)
       }
     } catch (error) {
       throw error;
@@ -112,8 +112,8 @@ export function AuthContextProvider({ children }: Props) {
         user,
         signIn,
         signOut,
-        isLoadingStorageUserData,
-        updatingUserProfile
+        updatingUserProfile,
+        isLoadingStorageUserData
       }}
     >
       {children}

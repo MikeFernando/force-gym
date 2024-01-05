@@ -1,7 +1,8 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import ContentLoader, { Circle } from 'react-content-loader/native'
 import Toast from "react-native-root-toast";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -50,6 +51,7 @@ const ProfileSchema = Yup.object({
 export function Profile() {
   const [isUpdating, setIsUpdating] = useState(false)
 
+  const { width, height } = useWindowDimensions()
   const { user, updatingUserProfile } = useAuth();
 
   const {control, handleSubmit, reset, formState: { errors }} = useForm<FormDataProps>({
@@ -109,7 +111,7 @@ export function Profile() {
         const userUpdated = user
         userUpdated.avatar = avatarUpdatedResponse.data.avatar
 
-        updatingUserProfile(userUpdated)
+        await updatingUserProfile(userUpdated)
 
         Toast.show('Foto atualizada!', {
           duration: Toast.durations.LONG,
@@ -118,8 +120,18 @@ export function Profile() {
           textColor: "#ffffff",
         })
       }
+
     } catch (error) {
-      throw error;
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Tente novamente.'
+
+      Toast.show(title, {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.TOP,
+        backgroundColor: '#2176ff',
+        textColor: '#ffffff'
+      })
+
     } finally {
       setIsUpdating(false);
     }
@@ -175,11 +187,13 @@ export function Profile() {
         <View className="items-center justify-center mt-8">
           {
             isUpdating ? (
-              <UserPhoto
-                source={{ uri: `${defaultUserAvatar}` }}
-                alt="Foto de perfil"
-                size={128}
-              />
+              <ContentLoader 
+                viewBox={`0 0 ${width} ${height}`}
+                backgroundColor="#7C7C8A"
+                foregroundColor="#29292E"
+              >
+                <Circle cx="180" cy="100" r="100" />
+              </ContentLoader>
             ) : (
               <UserPhoto
                 source={
