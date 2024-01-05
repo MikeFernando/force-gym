@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios"
 
 import { AppError } from "@utils/AppError"
+import { storageGetToken } from "@storage/token/storageToken"
 
 type SignOut = () => void
 
@@ -14,19 +15,30 @@ const api = axios.create({
 
 api.registerInterceptTokenManager = (signOut) => {
   const interceptTokenManager = api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response && error.response.data) {
-        return Promise.reject(new AppError(error.response.data.message)) 
+    (response) => response, async (reqError) => {
+      if (reqError?.response?.status === 401) {
+        if (reqError.response?.data === 'token.expired' || reqError.response?.data === 'token.invalid') {
+          const { refresh_token } = await storageGetToken()
+
+          if (!refresh_token) {
+            signOut()
+            return Promise.reject(reqError)
+          }
+        }
+
+        signOut()
+      }
+
+      if (reqError.response && reqError.response.data) {
+        return Promise.reject(new AppError(reqError.response.data.message)) 
       } else {
-        return Promise.reject(error)
+        return Promise.reject(reqError)
       }
     })
   
   return () => {
     api.interceptors.response.eject(interceptTokenManager)
   }
-  
 }
 
 
